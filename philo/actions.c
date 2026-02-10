@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 13:08:29 by afournie          #+#    #+#             */
-/*   Updated: 2026/02/04 17:38:59 by afournie         ###   ########.fr       */
+/*   Updated: 2026/02/10 12:14:22 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,26 @@ void	think(t_settings *settings)
 	printf("timestamp - nb philo - is thinking");
 }
 
-void	take_fork(t_fork *fork)
+void	take_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&fork->mutex);
-	printf("timestamp - nb philo - has taken fork");
-	pthread_mutex_unlock(&fork->mutex);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->right_fork->mutex);
+		printf("timestamp - nb philo - has taken fork");
+		pthread_mutex_lock(&philo->left_fork->mutex);
+		printf("timestamp - nb philo - has taken fork");
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->left_fork->mutex);
+		printf("timestamp - nb philo - has taken fork");
+		pthread_mutex_lock(&philo->right_fork->mutex);
+		printf("timestamp - nb philo - has taken fork");
+	}
 }
 
-void	release_fork(t_fork *fork)
+void	release_fork(t_philo *philo)
 {
-	printf("timestamp - nb philo - has released fork");
+	pthread_mutex_lock(&philo->left_fork->mutex);
+	pthread_mutex_lock(&philo->right_fork->mutex);
 }

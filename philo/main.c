@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:58:59 by afournie          #+#    #+#             */
-/*   Updated: 2026/02/10 10:17:10 by afournie         ###   ########.fr       */
+/*   Updated: 2026/02/10 12:09:49 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,7 @@ static t_settings	init_settings(char **argv, t_settings *settings)
 	return (*settings);
 }
 
-bool	init_philo_forks(t_settings *settings, t_fork **forks)
-{
-	int	i;
 
-	forks = malloc(sizeof(t_fork) * settings->nb_philo);
-	if (!forks)
-		return (false);
-	i = -1;
-	while (++i < settings->nb_eat_by_philo)
-	{
-		if (pthread_mutex_init(&(*forks)[i].mutex, NULL) != 0)
-			return (destroy_mutex(NULL, 0, forks, i), false);
-	}
-	return (true);
-}
 
 int	main(int argc, char **argv)
 {

@@ -6,11 +6,27 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 10:23:48 by afournie          #+#    #+#             */
-/*   Updated: 2026/02/10 10:31:35 by afournie         ###   ########.fr       */
+/*   Updated: 2026/02/10 12:10:13 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
+
+bool	init_philo_forks(t_settings *settings, t_fork **forks)
+{
+	int	i;
+
+	forks = malloc(sizeof(t_fork) * settings->nb_philo);
+	if (!forks)
+		return (false);
+	i = -1;
+	while (++i < settings->nb_eat_by_philo)
+	{
+		if (pthread_mutex_init(&(*forks)[i].mutex, NULL) != 0)
+			return (destroy_mutex(NULL, 0, forks, i), false);
+	}
+	return (true);
+}
 
 bool	init_philo(t_philo **philo, t_fork *fork, t_settings *settings)
 {
