@@ -6,7 +6,7 @@
 #    By: afournie <afournie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/12 17:14:16 by afournie          #+#    #+#              #
-#    Updated: 2026/01/26 14:25:20 by afournie         ###   ########.fr        #
+#    Updated: 2026/03/02 17:07:28 by afournie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,16 @@ MAKEFLAGS += -s
 
 NAME		= philo
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g -I$(HEADERS_DIR)
+CFLAGS		= -Wall -Wextra -g3 -I$(HEADERS_DIR)
 
 HEADERS_DIR	= includes
 
 SRCS		= utils.c \
-			  main.c
+			  main.c \
+			  jarvis.c \
+			  philo.c \
+			  actions.c \
+			  error.c
 
 OBJS        = $(SRCS:.c=.o)
 

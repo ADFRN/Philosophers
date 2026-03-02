@@ -1,12 +1,12 @@
 Plusieurs philosophes autour d'une table.
-Un grand bol de spaghettie au milieu de la table.
+Un grand bol de spaghetti au milieu de la table.
 
 1 philo = 1 fourchette a leurs droites.
 
 Possibilitees philosophes :
 	- Manger
-	- Penser
 	- Dormir
+	- Penser
 
 Cycle de vie d'un philosophe :
 	Manger -> Dormir -> Penser -> Manger -> ...

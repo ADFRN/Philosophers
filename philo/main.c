@@ -6,13 +6,13 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:58:59 by afournie          #+#    #+#             */
-/*   Updated: 2026/02/10 12:09:49 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/02 17:17:33 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
 
-static t_settings	init_settings(char **argv, t_settings *settings)
+static void	init_settings(char **argv, t_settings *settings)
 {
 	settings->nb_philo = ft_atoi(argv[1]);
 	settings->time_to_die = ft_atoi(argv[2]);
@@ -20,16 +20,14 @@ static t_settings	init_settings(char **argv, t_settings *settings)
 	settings->time_to_sleep = ft_atoi(argv[4]);
 	if (argv[5])
 		settings->nb_eat_by_philo = ft_atoi(argv[5]);
-	settings->start_timestamp = current_time_ms();
-	return (*settings);
+	settings->start_timestamp = get_current_time();
 }
-
-
 
 int	main(int argc, char **argv)
 {
 	t_settings	*settings;
 	t_philo		*philos;
+	t_fork		*forks;
 
 	if (argc < 5)
 		return (printf("Argument required"), 1);
@@ -39,6 +37,10 @@ int	main(int argc, char **argv)
 	if (!settings)
 		return (EXIT_FAILURE);
 	init_settings(argv, settings);
-	init_philo(settings, philos);
+	if (!init_philo_forks(settings, &forks) || !init_philo(&philos, forks,
+			settings))
+		return (EXIT_FAILURE);
+	start_routine(philos);
+	jarvis(settings, philos);
 	return (EXIT_SUCCESS);
 }

@@ -6,18 +6,19 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 14:04:45 by afournie          #+#    #+#             */
-/*   Updated: 2026/01/26 14:06:00 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:57:18 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
 
-long	current_time_ms(void)
+size_t	get_current_time(void)
 {
-	struct timeval	current_tv;
+	struct timeval	time;
 
-	gettimeofday(&current_tv, NULL);
-	return (current_tv.tv_sec * 1000 + current_tv.tv_usec / 1000);
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 int	ft_atoi(const char *str)
@@ -44,4 +45,33 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (nbr * sign);
+}
+
+bool	is_simulation_over(t_settings *settings)
+{
+	pthread_mutex_lock(&settings->philo_died_mutex);
+	if (settings->philo_died)
+	{
+		pthread_mutex_unlock(&settings->philo_died_mutex);
+		return (true);
+	}
+	pthread_mutex_unlock(&settings->philo_died_mutex);
+	pthread_mutex_lock(&settings->philo_eat_all_mutex);
+	if (settings->philo_eat_all)
+	{
+		pthread_mutex_unlock(&settings->philo_eat_all_mutex);
+		return (true);
+	}
+	pthread_mutex_unlock(&settings->philo_eat_all_mutex);
+	return (false);
+}
+
+void	secure_print(t_philo *p, const char *status)
+{
+	pthread_mutex_lock(&p->settings->print_mutex);
+	if (!p->settings->philo_died && !p->settings->philo_eat_all)
+		printf("%ld %d %s\n",
+			get_current_time() - p->settings->start_timestamp,
+			p->id, status);
+	pthread_mutex_unlock(&p->settings->print_mutex);
 }
