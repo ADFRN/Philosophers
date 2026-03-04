@@ -6,19 +6,19 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 13:13:26 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 11:42:09 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 13:34:43 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 typedef struct s_settings
 {
@@ -65,10 +65,12 @@ void				think(t_philo *philo);
 void				sleepy(t_philo *philo);
 size_t				get_current_time(void);
 int					ft_atoi(const char *str);
+void				*philo_routine(void *arg);
 void				take_fork(t_philo *philo);
 void				release_fork(t_philo *philo);
 bool				start_routine(t_philo *philo);
 void				mutex_init(t_settings *settings);
+void				*philo_routine_for_three(void *arg);
 void				free_settings(t_settings *settings);
 bool				is_simulation_over(t_settings *settings);
 void				jarvis(t_settings *settings, t_philo *philo);

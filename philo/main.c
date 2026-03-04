@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:58:59 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 11:39:10 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:22:16 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av)
 		return (EXIT_FAILURE);
 	if (ft_atoi(av[1]) == 1)
 	{
-		usleep(ft_atoi(av[2]));
+		usleep(ft_atoi(av[2]) * 1000);
 		printf("%d 1 died", ft_atoi(av[2]));
 		return (EXIT_SUCCESS);
 	}

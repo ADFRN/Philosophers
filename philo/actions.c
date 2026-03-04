@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 13:08:29 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 11:17:55 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 14:06:35 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,19 @@ void	eat(t_philo *philo)
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = get_current_time();
 	philo->nb_eaten++;
+	if (philo->settings->need_to_check_meal
+		&& philo->nb_eaten == philo->settings->nb_max_eat)
+	{
+		pthread_mutex_lock(&philo->settings->nb_philo_eaten_all_mutex);
+		philo->settings->nb_philo_eaten_all++;
+		if (philo->settings->nb_philo_eaten_all == philo->settings->nb_philo)
+		{
+			pthread_mutex_lock(&philo->settings->philo_eat_all_mutex);
+			philo->settings->philo_eat_all = true;
+			pthread_mutex_unlock(&philo->settings->philo_eat_all_mutex);
+		}
+		pthread_mutex_unlock(&philo->settings->nb_philo_eaten_all_mutex);
+	}
 	pthread_mutex_unlock(&philo->meal_mutex);
 	ft_u_sleep(philo->settings->time_to_eat, philo->settings);
 	release_fork(philo);
@@ -27,12 +40,21 @@ void	eat(t_philo *philo)
 void	sleepy(t_philo *philo)
 {
 	secure_print(philo, "is sleeping");
-	ft_u_sleep(philo->settings->time_to_eat, philo->settings);
+	ft_u_sleep(philo->settings->time_to_sleep, philo->settings);
 }
 
 void	think(t_philo *philo)
 {
+	size_t	respirelesang;
+
 	secure_print(philo, "is thinking");
+	if (philo->settings->nb_philo == 3)
+	{
+		respirelesang = philo->settings->time_to_die
+			- (philo->settings->time_to_eat + philo->settings->time_to_sleep
+				* 1.5);
+		ft_u_sleep(respirelesang, philo->settings);
+	}
 }
 
 void	take_fork(t_philo *philo)

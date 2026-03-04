@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 13:47:26 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 11:38:12 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 13:52:24 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,8 @@ void	jarvis(t_settings *settings, t_philo *philo)
 		{
 			time = get_current_time();
 			check_death(&philo[i], settings, time);
-			if (settings->need_to_check_meal == 1)
-				check_total_meal(&philo[i], settings);
 			i++;
 		}
+		usleep(500);
 	}
 }
