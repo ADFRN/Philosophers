@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 13:13:26 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/02 17:17:23 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 11:33:36 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef struct s_settings
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				nb_eat_by_philo;
+	int				nb_max_eat;
+	int				need_to_check_meal;
 	int				nb_philo_eaten_all;
 	int				philo_died;
 	bool			philo_eat_all;
@@ -58,22 +59,35 @@ typedef struct s_philo
 	pthread_mutex_t	meal_mutex;
 }					t_philo;
 
-int					ft_atoi(const char *str);
+void				eat(t_philo *philo);
+void				think(t_philo *philo);
+void				sleepy(t_philo *philo);
 size_t				get_current_time(void);
+int					ft_atoi(const char *str);
+void				take_fork(t_philo *philo);
+void				release_fork(t_philo *philo);
+int					check_args(int ac);
+bool				start_routine(t_philo *philo);
+void				mutex_init(t_settings *settings);
+void				free_settings(t_settings *settings);
 bool				is_simulation_over(t_settings *settings);
+void				jarvis(t_settings *settings, t_philo *philo);
+void				secure_print(t_philo *p, const char *status);
+bool				exit_philo_routine(t_philo *p, int nb_philo);
+void				destroy_exit(int exit_code, int nb_mutex, ...);
+void				ft_u_sleep(size_t timeTo, t_settings *settings);
+void				free_forks(t_fork *forks, t_settings *settings);
+void				init_settings(char **argv, t_settings *settings);
+void				free_philos(t_philo *philo, t_settings *settings);
+void				check_total_meal(t_philo *p, t_settings *settings);
+bool				init_philo_forks(t_settings *settings, t_fork **forks);
+void				check_death(t_philo *p, t_settings *p_set, long timestamp);
+
 bool				init_philo(t_philo **philo, t_fork *fork,
 						t_settings *settings);
-bool				init_philo_forks(t_settings *settings, t_fork **forks);
-void				jarvis(t_settings *settings, t_philo *philo);
-void				take_fork(t_philo *philo);
-void				eat(t_philo *philo);
-void				sleepy(t_philo *philo);
-void				think(t_philo *philo);
-void				release_fork(t_philo *philo);
-void				secure_print(t_philo *p, const char *status);
-bool				start_routine(t_philo *philo);
-void				destroy_exit(int exit_code, int nb_mutex, ...);
 void				destroy_mutex(t_philo **philo, int i_philo, t_fork **forks,
 						int i_fork);
+void				free_all(t_settings *settings, t_philo *philo,
+						t_fork *forks);
 
 #endif

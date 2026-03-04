@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 14:04:45 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/02 16:57:18 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 11:17:36 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,26 @@ bool	is_simulation_over(t_settings *settings)
 
 void	secure_print(t_philo *p, const char *status)
 {
+	size_t	timestamp;
+
+	timestamp = get_current_time();
 	pthread_mutex_lock(&p->settings->print_mutex);
+	pthread_mutex_lock(&p->settings->philo_died_mutex);
+	pthread_mutex_lock(&p->settings->philo_eat_all_mutex);
 	if (!p->settings->philo_died && !p->settings->philo_eat_all)
-		printf("%ld %d %s\n",
-			get_current_time() - p->settings->start_timestamp,
-			p->id, status);
+		printf("%ld %d %s\n", timestamp - p->settings->start_timestamp, p->id,
+			status);
+	pthread_mutex_unlock(&p->settings->philo_eat_all_mutex);
+	pthread_mutex_unlock(&p->settings->philo_died_mutex);
 	pthread_mutex_unlock(&p->settings->print_mutex);
+}
+
+void	ft_u_sleep(size_t timeTo, t_settings *settings)
+{
+	size_t	sttime;
+
+	sttime = get_current_time();
+	while (!is_simulation_over(settings) && ((get_current_time()
+				- sttime) < timeTo))
+		usleep(500);
 }

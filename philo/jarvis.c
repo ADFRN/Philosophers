@@ -6,30 +6,17 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 13:47:26 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/02 17:28:24 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/04 11:14:18 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
 
-void	mutex_init(t_settings *settings)
-{
-	if (pthread_mutex_init(&settings->nb_philo_eaten_all_mutex, NULL) != 0)
-		exit(EXIT_FAILURE);
-	if (pthread_mutex_init(&settings->philo_died_mutex, NULL) != 0)
-		destroy_exit(EXIT_FAILURE, 1, settings->nb_philo_eaten_all_mutex);
-	if (pthread_mutex_init(&settings->philo_eat_all_mutex, NULL) != 0)
-		destroy_exit(EXIT_FAILURE, 1, settings->nb_philo_eaten_all_mutex,
-			settings->philo_died_mutex);
-	if (pthread_mutex_init(&settings->print_mutex, NULL) != 0)
-		destroy_exit(EXIT_FAILURE, 1, settings->nb_philo_eaten_all_mutex,
-			settings->philo_died_mutex, settings->philo_eat_all_mutex);
-}
 
-static void	check_total_meal(t_philo *p, t_settings *settings)
+void	check_total_meal(t_philo *p, t_settings *settings)
 {
 	pthread_mutex_lock(&settings->nb_philo_eaten_all_mutex);
-	if (settings->nb_philo_eaten_all == settings->nb_philo)
+	if (settings->nb_max_eat == p->nb_eaten)
 	{
 		pthread_mutex_lock(&settings->philo_eat_all_mutex);
 		settings->philo_eat_all = true;
@@ -38,7 +25,7 @@ static void	check_total_meal(t_philo *p, t_settings *settings)
 	pthread_mutex_unlock(&p->settings->nb_philo_eaten_all_mutex);
 }
 
-static void	check_death(t_philo *p, t_settings *p_set, long timestamp)
+void	check_death(t_philo *p, t_settings *p_set, long timestamp)
 {
 	pthread_mutex_lock(&p->meal_mutex);
 	if (timestamp - p->last_meal >= p_set->time_to_die)
@@ -56,6 +43,19 @@ void	*philo_routine(void *arg)
 	t_philo	*p;
 
 	p = (t_philo *)arg;
+	if (p->settings->nb_philo % 2 != 0)
+	{
+		if (p->id == 2)
+			ft_u_sleep(p->settings->time_to_eat * 1.5, p->settings);
+		else if (p->id == 3)
+			ft_u_sleep(p->settings->time_to_eat * 0.5, p->settings);
+		else if (p->id % 2 == 0)
+			ft_u_sleep(p->settings->time_to_eat * 2, p->settings);
+		else if (p->id != 1)
+			ft_u_sleep(p->settings->time_to_eat, p->settings);
+	}
+	else
+		ft_u_sleep(p->settings->time_to_eat / 2, p->settings);
 	while (!is_simulation_over(p->settings))
 	{
 		eat(p);
@@ -65,7 +65,7 @@ void	*philo_routine(void *arg)
 	return (NULL);
 }
 
-static bool	exit_philo_routine(t_philo *p, int nb_philo)
+bool	exit_philo_routine(t_philo *p, int nb_philo)
 {
 	pthread_mutex_lock(&p->settings->philo_died_mutex);
 	p->settings->philo_died = true;
@@ -100,6 +100,9 @@ void	jarvis(t_settings *settings, t_philo *philo)
 		{
 			time = get_current_time();
 			check_death(&philo[i], settings, time);
+			if (settings->need_to_check_meal == 1)
+				check_total_meal(&philo[i], settings);
+			i++;
 		}
 	}
 }
