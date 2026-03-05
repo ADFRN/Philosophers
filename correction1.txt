@@ -1,0 +1,2 @@
+Validite des arguments, n'oublie pas il faut que des chiffres et refuser 0 philo.
+Le temps de reflexion est trop grand et te fait rater le test "4 410 200 200".
