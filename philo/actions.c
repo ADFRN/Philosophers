@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 13:08:29 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/06 18:05:49 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 18:18:14 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	eat(t_philo *philo)
 {
-	long time;
+	long	time;
 
 	take_fork(philo);
 	time = get_current_time();

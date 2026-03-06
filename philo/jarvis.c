@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 13:47:26 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/06 17:31:09 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 18:13:10 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	check_death(t_philo *p, t_settings *p_set, long timestamp)
 	pthread_mutex_lock(&p->meal_mutex);
 	if (timestamp - p->last_meal >= p_set->time_to_die)
 	{
-		printf("%d tmp: %ld\n",p->id, (timestamp - p->last_meal));
 		secure_print(p, "died");
 		pthread_mutex_lock(&p_set->philo_died_mutex);
 		p_set->philo_died = p->id;
