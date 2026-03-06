@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 13:08:29 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/06 10:32:10 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 18:05:49 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	sleepy(t_philo *philo)
 void	think(t_philo *philo)
 {
 	secure_print(philo, "is thinking");
-	if (philo->settings->nb_philo == 3)
+	if (philo->settings->nb_philo % 2)
 		ft_u_sleep(philo->settings->time_to_sleep, philo->settings);
 }
 
