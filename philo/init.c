@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 10:23:40 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 11:03:20 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 10:54:55 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_settings(char **argv, t_settings *settings)
 	settings->philo_died = 0;
 	settings->philo_eat_all = 0;
 	settings->start_routine = 0;
-	settings->start_timestamp = get_current_time();
+	settings->start_timestamp = 0;
 }
 
 bool	init_philo_forks(t_settings *settings, t_fork **forks)
@@ -57,6 +57,7 @@ bool	init_philo(t_philo **philo, t_fork *fork, t_settings *settings)
 	int	n;
 
 	n = settings->nb_philo;
+	settings->start_timestamp = get_current_time();
 	*philo = malloc(sizeof(t_philo) * n);
 	if (!*philo)
 		return (false);

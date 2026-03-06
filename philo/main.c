@@ -6,19 +6,28 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:58:59 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 14:22:16 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 11:19:42 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
 
-int	check_args(int ac)
+bool	check_args(int ac, char **av)
 {
 	if (ac < 5)
-		return (printf("Argument required"), 1);
+		return (printf("./philo <nb_philo> <die> <eat> <sleep> [nb_eat]\n"),
+			false);
 	if (ac > 6)
-		return (printf("Too many args"), 1);
-	return (0);
+		return (printf("./philo <nb_philo> <die> <eat> <sleep> [nb_eat]\n"),
+			false);
+	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[2]) <= 0 || ft_atoi(av[3]) <= 0
+		|| ft_atoi(av[4]) <= 0)
+		return (printf("Error: Only strictly positive values are allowed.\n"),
+			false);
+	if (ac == 6 && ft_atoi(av[5]) <= 0)
+		return (printf("Error: Only strictly positive values are allowed.\n"),
+			false);
+	return (true);
 }
 
 int	main(int ac, char **av)
@@ -27,7 +36,7 @@ int	main(int ac, char **av)
 	t_philo		*philos;
 	t_fork		*forks;
 
-	if (check_args(ac))
+	if (!check_args(ac, av))
 		return (EXIT_FAILURE);
 	if (ft_atoi(av[1]) == 1)
 	{

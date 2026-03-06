@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 13:13:26 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 13:34:43 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 10:55:03 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_philo
 	pthread_mutex_t	meal_mutex;
 }					t_philo;
 
-int					check_args(int ac);
 void				eat(t_philo *philo);
 void				think(t_philo *philo);
 void				sleepy(t_philo *philo);
@@ -68,6 +67,7 @@ int					ft_atoi(const char *str);
 void				*philo_routine(void *arg);
 void				take_fork(t_philo *philo);
 void				release_fork(t_philo *philo);
+bool				check_args(int ac, char **av);
 bool				start_routine(t_philo *philo);
 void				mutex_init(t_settings *settings);
 void				*philo_routine_for_three(void *arg);

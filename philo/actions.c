@@ -6,7 +6,7 @@
 /*   By: afournie <afournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 13:08:29 by afournie          #+#    #+#             */
-/*   Updated: 2026/03/04 14:06:35 by afournie         ###   ########.fr       */
+/*   Updated: 2026/03/06 10:32:10 by afournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	eat(t_philo *philo)
 {
+	long time;
+
 	take_fork(philo);
-	secure_print(philo, "is eating");
+	time = get_current_time();
 	pthread_mutex_lock(&philo->meal_mutex);
-	philo->last_meal = get_current_time();
+	philo->last_meal = time;
 	philo->nb_eaten++;
+	secure_print(philo, "is eating");
 	if (philo->settings->need_to_check_meal
 		&& philo->nb_eaten == philo->settings->nb_max_eat)
 	{
@@ -45,16 +48,9 @@ void	sleepy(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-	size_t	respirelesang;
-
 	secure_print(philo, "is thinking");
 	if (philo->settings->nb_philo == 3)
-	{
-		respirelesang = philo->settings->time_to_die
-			- (philo->settings->time_to_eat + philo->settings->time_to_sleep
-				* 1.5);
-		ft_u_sleep(respirelesang, philo->settings);
-	}
+		ft_u_sleep(philo->settings->time_to_sleep, philo->settings);
 }
 
 void	take_fork(t_philo *philo)
